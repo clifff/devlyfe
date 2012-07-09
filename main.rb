@@ -9,7 +9,7 @@ def fetch_rss_feed(url)
   host = host.sub(/^www/, "")
   host = host.gsub(/\//, "_")
 
-  tmp_dir = File.join( File.dirname(__FILE__) )
+  tmp_dir = File.join( File.dirname(__FILE__), "tmp" )
   if !File.directory?( tmp_dir )
     FileUtils.mkdir( tmp_dir )
   end
