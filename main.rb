@@ -4,16 +4,11 @@ require 'open-uri'
 require 'fileutils'
 require 'erb'
 
-def render_to_file
-  erb = ERB.new( File.open("index.html.erb").read )
-  markup = erb.result(binding)
-  file = File.new("index.html", "w")
-  file.write(markup)
-  file.close
-end
-
 def fetch_rss_feed(url)
-  host = URI.parse(url).host
+  host = url.sub("http://", "")
+  host = host.sub(/^www/, "")
+  host = host.gsub(/\//, "_")
+
   if !File.directory?("tmp")
     FileUtils.mkdir("tmp")
   end
@@ -33,16 +28,22 @@ end
 
 @sites = [
   {
+    :name => "Hacker News",
+    :feed_url => "http://news.ycombinator.com/rss",
+    :entry_xpath => "//item",
+    :url => "http://news.ycombinator.com/"
+  },
+  {
     :name => "The Verge",
     :feed_url => "http://www.theverge.com/rss/index.xml",
     :entry_xpath => "//entry",
     :url => "http://www.theverge.com"
   },
   {
-    :name => "Hacker News",
-    :feed_url => "http://news.ycombinator.com/rss",
-    :entry_xpath => "//item",
-    :url => "http://news.ycombinator.com/"
+    :name => "Polygon",
+    :feed_url => "http://www.theverge.com/gaming/rss/index.xml",
+    :entry_xpath => "//entry",
+    :url => "http://www.theverge.com/gaming"
   }
 ]
 
@@ -50,7 +51,8 @@ end
   doc = Nokogiri::XML( fetch_rss_feed(site[:feed_url]) )
   doc.remove_namespaces!
   site[:entries] = []
-  doc.xpath( site[:entry_xpath] ).each do |entry|
+  doc.xpath( site[:entry_xpath] ).each_with_index do |entry, i|
+    next if i > 9
 
     # TODO: Ugh, need a better way of differentating between feeds. Hopefully just an RSS/Atom thing?
     link = entry.xpath("link")
@@ -67,4 +69,8 @@ end
   end
 end
 
-render_to_file
+erb = ERB.new( File.open("index.html.erb").read )
+markup = erb.result(binding)
+file = File.new("index.html", "w")
+file.write(markup)
+file.close
