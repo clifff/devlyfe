@@ -70,8 +70,11 @@ end
   end
 end
 
-erb = ERB.new( File.open("index.html.erb").read )
+base_dir = File.dirname(__FILE__)
+erb = ERB.new(
+  File.open( File.join(base_dir, "index.html.erb") ).read
+)
 markup = erb.result(binding)
-file = File.new("index.html", "w")
+file = File.new( File.join(base_dir, "index.html"), "w")
 file.write(markup)
 file.close
