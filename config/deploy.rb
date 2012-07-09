@@ -1,5 +1,5 @@
 set :application, "devlyfe"
-set :repository,  "git@github.com:clifff/drunken-octo-bear.git"
+set :repository,  "git://github.com/clifff/drunken-octo-bear.git"
 
 set :scm, :git
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`

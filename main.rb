@@ -9,11 +9,12 @@ def fetch_rss_feed(url)
   host = host.sub(/^www/, "")
   host = host.gsub(/\//, "_")
 
-  if !File.directory?("tmp")
-    FileUtils.mkdir("tmp")
+  tmp_dir = File.join( File.dirname(__FILE__) )
+  if !File.directory?( tmp_dir )
+    FileUtils.mkdir( tmp_dir )
   end
-  location = "tmp/#{host}.xml"
-  if File.exists?(location)
+  location = File.join(tmp_dir, "#{host}.xml")
+  if File.exists?(location) && false
     puts "READING FROM FILE"
     feed = File.open(location).read
   else
