@@ -2,19 +2,20 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
+    <title>Dev Lyfe</title>
   </head>
   <body>
     <div class='container'>
       <header class='jumbotron subhead'>
         <h1>Dev Lyfe</h1>
         <p class='lead'>
-          Links about stuff
+          Links about stuff. Last updated at <%= Time.now.strftime("%I:%M%p %Z") %>
         </p>
       </header>
-      <div class='row-fluid'>
-        <% @sites.each_slice(2) do |sites| %>
-          <div class='span6'>
-            <% sites.each do |site| %>
+      <% @sites.each_slice(2) do |sites| %>
+        <div class='row-fluid'>
+          <% sites.each do |site| %>
+            <div class='span6'>
               <h2>
                 <a href='<%= site[:url] %>'><%= site[:name] %></a>
               </h2>
@@ -25,10 +26,10 @@
                 </li>
               <% end %>
               </ul>
-            <% end %>
-          </div>
-        <% end %>
-      </div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
     </div>
   </body>
 </html>
