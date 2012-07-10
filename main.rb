@@ -44,6 +44,18 @@ def vox_media_processor(entry_xml)
   data
 end
 
+def reddit_processor(entry_xml)
+  data = {
+    :comments => entry_xml.xpath("link").text,
+    :title => entry_xml.xpath("title").text
+  }
+  doc = Nokogiri::HTML( entry_xml.xpath("description").text )
+  data[:url] = doc.xpath('//a')[1].attr('href')
+  data
+end
+<<DOC
+DOC
+
 @sites = [
   {
     :name => "Hacker News",
@@ -65,6 +77,13 @@ end
     :entry_xpath => "//entry",
     :processor => :vox_media_processor,
     :url => "http://www.theverge.com/gaming"
+  },
+  {
+    :name => "Proggit",
+    :feed_url => "http://www.reddit.com/r/programming/.rss",
+    :entry_xpath => "//item",
+    :processor => :reddit_processor,
+    :url => "http://www.reddit.com/r/programming/"
   }
 ]
 
