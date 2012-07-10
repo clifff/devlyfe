@@ -32,9 +32,10 @@
               <h2>
                 <a href='<%= site[:url] %>'><%= site[:name] %></a>
               </h2>
-              <ul>
+              <ul class='unstyled'>
               <% site[:entries].each do |entry| %>
                 <li>
+                <a href='<%= entry[:comments] %>'><i class='icon-comment'></i></a>
                   <a href='<%= entry[:url] %>'><%= entry[:title] %></a>
                 </li>
               <% end %>

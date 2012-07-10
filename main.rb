@@ -27,23 +27,43 @@ def fetch_rss_feed(url)
   feed
 end
 
+def hacker_news_processor(entry_xml)
+  {
+    :url => entry_xml.xpath("link").text,
+    :comments => entry_xml.xpath("comments").text,
+    :title => entry_xml.xpath("title").text,
+  }
+end
+
+def vox_media_processor(entry_xml)
+  data = {
+    :url => entry_xml.xpath("link").attr("href").text,
+    :title => entry_xml.xpath("title").text
+  }
+  data[:comments] = data[:url] + "#comments"
+  data
+end
+
 @sites = [
   {
     :name => "Hacker News",
     :feed_url => "http://news.ycombinator.com/rss",
     :entry_xpath => "//item",
+    :processor => :hacker_news_processor,
     :url => "http://news.ycombinator.com/"
   },
   {
     :name => "The Verge",
     :feed_url => "http://www.theverge.com/rss/index.xml",
     :entry_xpath => "//entry",
+    :processor => :vox_media_processor,
     :url => "http://www.theverge.com"
   },
   {
     :name => "Polygon",
     :feed_url => "http://www.theverge.com/gaming/rss/index.xml",
     :entry_xpath => "//entry",
+    :processor => :vox_media_processor,
     :url => "http://www.theverge.com/gaming"
   }
 ]
@@ -54,19 +74,7 @@ end
   site[:entries] = []
   doc.xpath( site[:entry_xpath] ).each_with_index do |entry, i|
     next if i > 9
-
-    # TODO: Ugh, need a better way of differentating between feeds. Hopefully just an RSS/Atom thing?
-    link = entry.xpath("link")
-    url = if link.attr('href')
-      link.attr('href').text
-    else
-      link.text
-    end
-
-    site[:entries] << {
-      :title => entry.xpath("title").text,
-      :url => url
-    }
+    site[:entries] << self.send(site[:processor], entry)
   end
 end
 
