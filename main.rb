@@ -97,7 +97,7 @@ DOC
   end
 end
 
-base_dir = File.dirname(__FILE__)
+base_dir = File.expand_path(File.dirname(__FILE__))
 erb = ERB.new(
   File.open( File.join(base_dir, "index.html.erb") ).read
 )
