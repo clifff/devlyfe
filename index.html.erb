@@ -24,7 +24,9 @@
       <header class='jumbotron subhead'>
         <h1>Dev Lyfe</h1>
         <p class='lead'>
-          Links about stuff. Last updated at <%= Time.now.strftime("%I:%M%p %Z") %>
+          A homepage for developers.
+          <br/>
+          Last updated at <%= Time.now.strftime("%I:%M%p %Z") %>
         </p>
       </header>
       <% @sites.each_slice(2) do |sites| %>

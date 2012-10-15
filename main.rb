@@ -14,7 +14,7 @@ def fetch_rss_feed(url)
     FileUtils.mkdir( tmp_dir )
   end
   location = File.join(tmp_dir, "#{host}.xml")
-  if File.exists?(location) && false
+  if File.exists?(location)
     puts "READING FROM FILE"
     feed = File.open(location).read
   else
@@ -53,8 +53,6 @@ def reddit_processor(entry_xml)
   data[:url] = doc.xpath('//a')[1].attr('href')
   data
 end
-<<DOC
-DOC
 
 @sites = [
   {
@@ -102,6 +100,6 @@ erb = ERB.new(
   File.open( File.join(base_dir, "index.html.erb") ).read
 )
 markup = erb.result(binding)
-file = File.new( File.join(base_dir, "index.html"), "w")
+file = File.new( File.join(base_dir, "public", "index.html"), "w")
 file.write(markup)
 file.close
