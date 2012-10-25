@@ -1,8 +1,19 @@
 require 'rubygems'
+require 'bundler/setup'
 require 'nokogiri'
 require 'open-uri'
 require 'fileutils'
 require 'erb'
+
+class Env
+  def self.development?
+    !production?
+  end
+
+  def self.production?
+    ENV['ENVIRONMENT'] == 'production'
+  end
+end
 
 def fetch_rss_feed(url)
   host = url.sub("http://", "")
@@ -14,7 +25,7 @@ def fetch_rss_feed(url)
     FileUtils.mkdir( tmp_dir )
   end
   location = File.join(tmp_dir, "#{host}.xml")
-  if File.exists?(location) && false
+  if File.exists?(location) && Env.development?
     puts "READING FROM FILE"
     feed = File.open(location).read
   else
@@ -71,10 +82,10 @@ end
   },
   {
     :name => "Polygon",
-    :feed_url => "http://www.theverge.com/gaming/rss/index.xml",
+    :feed_url => "http://www.polygon.com/rss/index.xml",
     :entry_xpath => "//entry",
     :processor => :vox_media_processor,
-    :url => "http://www.theverge.com/gaming"
+    :url => "http://www.polygon.com/"
   },
   {
     :name => "Proggit",
@@ -100,6 +111,13 @@ erb = ERB.new(
   File.open( File.join(base_dir, "index.html.erb") ).read
 )
 markup = erb.result(binding)
-file = File.new( File.join(base_dir, "public", "index.html"), "w")
-file.write(markup)
-file.close
+if Env.development? || true
+  file = File.new( File.join(base_dir, "public", "index.html"), "w")
+  file.write(markup)
+  file.close
+else
+  AWS::S3::Base.establish_connection!(
+    :access_key_id     => ENV['S3_ACCESS_KEY'],
+    :secret_access_key => ENV['S3_SECRET_KEY']
+  )
+end
