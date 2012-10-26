@@ -25,7 +25,7 @@ def fetch_rss_feed(url)
     FileUtils.mkdir( tmp_dir )
   end
   location = File.join(tmp_dir, "#{host}.xml")
-  if File.exists?(location) && Env.development?
+  if File.exists?(location) && Env.development? && false
     puts "READING FROM FILE"
     feed = File.open(location).read
   else
