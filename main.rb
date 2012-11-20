@@ -66,6 +66,7 @@ def reddit_processor(entry_xml)
 end
 
 @sites = [
+=begin
   {
     :name => "Hacker News",
     :feed_url => "http://news.ycombinator.com/rss",
@@ -73,6 +74,7 @@ end
     :processor => :hacker_news_processor,
     :url => "http://news.ycombinator.com/"
   },
+=end
   {
     :name => "The Verge",
     :feed_url => "http://www.theverge.com/rss/index.xml",
@@ -105,6 +107,12 @@ end
     site[:entries] << self.send(site[:processor], entry)
   end
 end
+
+@sites.unshift({
+  :entries => [{:url => '#', :name => "Down until I figure out why PG blocked us"}],
+  :url => "http://news.ycombinator.com",
+  :title => "Hacker News"
+})
 
 base_dir = File.expand_path(File.dirname(__FILE__))
 erb = ERB.new(
