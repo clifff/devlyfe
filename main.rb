@@ -109,9 +109,9 @@ end
 end
 
 @sites.unshift({
-  :entries => [{:url => '#', :name => "Down until I figure out why PG blocked us"}],
+  :entries => [{:url => '#', :title => "Down until I figure out why PG blocked us"}],
   :url => "http://news.ycombinator.com",
-  :title => "Hacker News"
+  :name => "Hacker News"
 })
 
 base_dir = File.expand_path(File.dirname(__FILE__))
