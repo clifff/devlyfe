@@ -4,6 +4,7 @@ require 'nokogiri'
 require 'open-uri'
 require 'fileutils'
 require 'erb'
+include ERB::Util
 
 class Env
   def self.development?

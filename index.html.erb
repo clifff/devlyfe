@@ -40,7 +40,7 @@
               <% site[:entries].each do |entry| %>
                 <li>
                 <a href='<%= entry[:comments] %>'><i class='icon-comment'></i></a>
-                  <a href='<%= entry[:url] %>'><%= entry[:title] %></a>
+                  <a href='<%= entry[:url] %>'><%= h entry[:title] %></a>
                 </li>
               <% end %>
               </ul>
