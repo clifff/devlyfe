@@ -69,7 +69,7 @@ end
 @sites = [
   {
     :name => "Hacker News",
-    :feed_url => "http://news.ycombinator.com/rss",
+    :feed_url => "https://news.ycombinator.com/rss",
     :entry_xpath => "//item",
     :processor => :hacker_news_processor,
     :url => "http://news.ycombinator.com/"
