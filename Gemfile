@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'nokogiri', "1.5.5"
+gem 'nokogiri', "~> 1.6"
 gem 'capistrano'
 gem 'aws-s3'
 
